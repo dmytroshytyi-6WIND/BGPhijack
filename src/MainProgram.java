@@ -43,11 +43,12 @@ public class MainProgram {
 		Test.debugMonitorSet(listMonitorMeanValues);
 		ArrayList<ArrayList<Monitor>> timeSteps = DataSet.timeStepsFor(listMonitorMeanValues);		
 		//debugTimeSteps(timeSteps);
-		Graphic.createFrames(listMonitorMeanValues,timeSteps);
+		
+		
+		
+		Graphic.createFrames(timeSteps);
 		//test(timeSteps);
 	
-		//modify
-
 		ArrayList<Double>  rttList= DataSet.RTTPerMonitor(timeSteps.get(0).get(0),timeSteps);
 		ArrayList<Integer>  ttlList= DataSet.TTLPerMonitor(timeSteps.get(0).get(0),timeSteps);
 

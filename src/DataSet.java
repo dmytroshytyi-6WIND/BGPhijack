@@ -3,24 +3,6 @@ import java.util.ArrayList;
 
 public class DataSet {
 		
-	public static ArrayList<String> DESTPerMonitor(Monitor desireMonitor, ArrayList<ArrayList<Monitor>> timeSteps){
-		ArrayList<String> arr = new ArrayList<String>();
-		for ( ArrayList<Monitor> monitorsPerTimeStep : timeSteps){
-			boolean matched = false;
-			for( Monitor monitor : monitorsPerTimeStep){
-			 if ( monitor.getHOST().equals(desireMonitor.getHOST()) ){
-				 arr.add(monitor.getDESTINATION());
-				 matched = true;
-			 }
-			}
-			if (matched == false){
-				 arr.add("");
-			}
-		}
-				
-		return arr;
-	}
-
 	public static ArrayList<Monitor> makeMeanValues(ArrayList<Monitor> monitors){
 		ArrayList<Monitor> tmpmonitors = new ArrayList<Monitor>();
 		int numMonitor = -1;
@@ -99,4 +81,21 @@ public class DataSet {
 		return arr;
 	}
 	
+	public static ArrayList<String> DESTPerMonitor(Monitor desireMonitor, ArrayList<ArrayList<Monitor>> timeSteps){
+		ArrayList<String> arr = new ArrayList<String>();
+		for ( ArrayList<Monitor> monitorsPerTimeStep : timeSteps){
+			boolean matched = false;
+			for( Monitor monitor : monitorsPerTimeStep){
+			 if ( monitor.getHOST().equals(desireMonitor.getHOST()) ){
+				 arr.add(monitor.getDESTINATION());
+				 matched = true;
+			 }
+			}
+			if (matched == false){
+				 arr.add("");
+			}
+		}
+				
+		return arr;
+	}
 }

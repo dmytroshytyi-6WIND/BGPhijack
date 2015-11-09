@@ -16,7 +16,11 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class Graphic {
 	
-	public static void createFrames(ArrayList<Monitor> listMonitorNotRepeat,ArrayList<ArrayList<Monitor>> timeSteps){
+	
+	// 1st parametr: lisMonitorNoRepeat consists of motinors with TTL and RTT. 
+	// 2nd paramert: TimeSteps could be timeinterval
+	//the first file needs conent of all monitors
+	public static void createFrames(ArrayList<ArrayList<Monitor>> timeSteps){
 		ArrayList<JFrame> Frames = new ArrayList<JFrame>();
 		ArrayList<Monitor> listMonitorsForTimeStep0 = timeSteps.get(0);
 		
@@ -28,19 +32,19 @@ public class Graphic {
 	    int i=0;
 		for (JFrame frame: Frames){
 			String host = listMonitorsForTimeStep0.get(i).getHOST();
-			frame.getContentPane().add(new ChartPanel(chartFunc(host,listMonitorNotRepeat,timeSteps)));
+			frame.getContentPane().add(new ChartPanel(chartFunc(host,timeSteps)));
 			frame.pack();
 			frame.setVisible(true);
 			i++;
 		}	
 	}
 	
-	public static JFreeChart chartFunc(String monitor, ArrayList<Monitor> monitors,ArrayList<ArrayList<Monitor>> timeSteps){	
+	public static JFreeChart chartFunc(String monitor,ArrayList<ArrayList<Monitor>> timeSteps){	
 		JFreeChart chart = ChartFactory.createScatterPlot(
 				monitor, // chart title
 	            "TIME", // x axis label
 	            "TTL|RTT|LOCATION", // y axis label
-	            createDataset(monitor, monitors,timeSteps), // data  ***-----PROBLEM------***
+	            createDataset(monitor,timeSteps), // data  ***-----PROBLEM------***
 	            PlotOrientation.VERTICAL,
 	            true, // include legend
 	            true, // tooltips
@@ -62,7 +66,7 @@ public class Graphic {
 		return chart;
 	}
 
-		public static XYDataset createDataset(String plotHost,ArrayList<Monitor> monitors,ArrayList<ArrayList<Monitor>> timeSteps) {
+		public static XYDataset createDataset(String plotHost,ArrayList<ArrayList<Monitor>> timeSteps) {
 			
 		    XYSeriesCollection result = new XYSeriesCollection();
 		    XYSeries ttl = new XYSeries("TTL");
