@@ -3,7 +3,30 @@ import java.util.ArrayList;
 
 public class DataSet {
 		
-	public static ArrayList<Monitor> makeMeanValues(ArrayList<Monitor> monitors){
+	public static ArrayList<Monitor> makeMeanValuesOfMesurement(ArrayList<Monitor> monitors){
+		ArrayList<Monitor> tmpmonitors = new ArrayList<Monitor>();
+		int numMonitor = -1;
+		for (Monitor each: monitors){
+			boolean matched = false;
+			for (Monitor tmpm: tmpmonitors){
+				if(each.getHOST().equals(tmpm.getHOST()) //)
+				&&(each.getTimeStep()==tmpm.getTimeStep()))
+				{
+					matched = true;
+						tmpmonitors.get(numMonitor).setTTL( (each.getTTL()+ tmpmonitors.get(numMonitor).getTTL())/2 ); 
+						tmpmonitors.get(numMonitor).setRTT( (each.getRTT()+ tmpmonitors.get(numMonitor).getRTT())/2 );
+				}
+			}
+			if (matched == false){
+				tmpmonitors.add(each);
+				numMonitor++;
+			}
+		}
+		return tmpmonitors; 
+	}
+	
+	//This function will help you
+	public static ArrayList<Monitor> makeIntervalValues(ArrayList<Monitor> monitors){
 		ArrayList<Monitor> tmpmonitors = new ArrayList<Monitor>();
 		int numMonitor = -1;
 		for (Monitor each: monitors){

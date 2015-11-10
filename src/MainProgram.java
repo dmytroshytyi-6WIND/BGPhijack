@@ -39,7 +39,7 @@ public class MainProgram {
 		
 		ArrayList<Monitor> listMonitor = Parser.parse("Z:/Eclipse/INF_570/LabPolyGroupFlapping/BGPHijack/");
 		Test.debugMonitorSet(listMonitor);
-		ArrayList<Monitor> listMonitorMeanValues = DataSet.makeMeanValues(listMonitor);
+		ArrayList<Monitor> listMonitorMeanValues = DataSet.makeMeanValuesOfMesurement(listMonitor);
 		Test.debugMonitorSet(listMonitorMeanValues);
 		ArrayList<ArrayList<Monitor>> timeSteps = DataSet.timeStepsFor(listMonitorMeanValues);		
 		//debugTimeSteps(timeSteps);
