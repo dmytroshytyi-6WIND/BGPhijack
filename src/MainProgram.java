@@ -79,5 +79,9 @@ public class MainProgram {
 */
 	}
 
+<<<<<<< HEAD
 }
 //fdsfhslkfds
+=======
+}
+>>>>>>> origin/master
