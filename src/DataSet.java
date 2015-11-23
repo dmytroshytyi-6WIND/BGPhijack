@@ -1,8 +1,12 @@
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
 
 
 public class DataSet {
 		
+	//ping for X times per time step combine into 1 mean result.
 	public static ArrayList<Monitor> makeMeanValuesOfMesurement(ArrayList<Monitor> monitors){
 		ArrayList<Monitor> tmpmonitors = new ArrayList<Monitor>();
 		int numMonitor = -1;
@@ -13,8 +17,10 @@ public class DataSet {
 				&&(each.getTimeStep()==tmpm.getTimeStep()))
 				{
 					matched = true;
+					// THIS IS ERROR. FIX IT!!!
 						tmpmonitors.get(numMonitor).setTTL( (each.getTTL()+ tmpmonitors.get(numMonitor).getTTL())/2 ); 
 						tmpmonitors.get(numMonitor).setRTT( (each.getRTT()+ tmpmonitors.get(numMonitor).getRTT())/2 );
+					// THIS IS WRONG COMPUTATION OF AVARAGE!!!!
 				}
 			}
 			if (matched == false){
@@ -26,6 +32,7 @@ public class DataSet {
 	}
 	
 	//This function will help you
+	
 	public static ArrayList<Monitor> makeIntervalValues(ArrayList<Monitor> monitors){
 		ArrayList<Monitor> tmpmonitors = new ArrayList<Monitor>();
 		int numMonitor = -1;
@@ -36,8 +43,10 @@ public class DataSet {
 				&&(each.getTimeStep()==tmpm.getTimeStep()))
 				{
 					matched = true;
+					// THIS IS ERROR. FIX IT!!!
 						tmpmonitors.get(numMonitor).setTTL( (each.getTTL()+ tmpmonitors.get(numMonitor).getTTL())/2 ); 
 						tmpmonitors.get(numMonitor).setRTT( (each.getRTT()+ tmpmonitors.get(numMonitor).getRTT())/2 );
+					// THIS IS WRONG COMPUTATION OF AVARAGE!!!!
 				}
 			}
 			if (matched == false){
@@ -68,11 +77,45 @@ public class DataSet {
 		return timeSteps;	
 	}
 	
+
+	//on input we have arrays of timesteps for all monitors.
+	//i.e we have one array with number of monitors. and embed array of time intervals for each monitor.
+	public static Map<Integer, Monitor> ttlRttDstPerMonitorsQueues(ArrayList<ArrayList<Monitor>> queues){
+		// ArrayList<ArrayList<ArrayList<String>>> Monitors =  new ArrayList<ArrayList<ArrayList<String>>>();
+		Map<Integer, Monitor> listMonitors = new HashMap<Integer, Monitor>();
+		int cntMonitor = 0;
+		for (ArrayList<Monitor> monitor : queues){
+			int sumTTL = 0;
+			double sumRTT = 0.0;
+			int cntElemInArr = 0;
+			ArrayList<Integer> arrTTL = new ArrayList<Integer>();
+			ArrayList<Double> arrRTT = new ArrayList<Double>();
+			
+			for ( Monitor timeStep : monitor){
+				 sumRTT += timeStep.getRTT();
+				 sumTTL += timeStep.getTTL();
+				 arrTTL.add(timeStep.getTTL());
+				 arrRTT.add(timeStep.getRTT());
+				 cntElemInArr++;
+			}
+			
+			//possible error according to the counter that increments in the func listMonitors
+			listMonitors.put(cntMonitor++, 
+					new Monitor(sumRTT / cntElemInArr, 
+								sumTTL / cntElemInArr,
+								Calc.getStandartDeviation(Modify.arrDoubleToString(arrRTT)),
+								Calc.getStandartDeviation(Modify.arrIntToString(arrTTL))
+								));
+		}
+		return listMonitors; 
+	}
+	
+	
 	public static ArrayList<Integer> TTLPerMonitor(Monitor desireMonitor, ArrayList<ArrayList<Monitor>> timeSteps){
 		ArrayList<Integer> arr = new ArrayList<Integer>();
 		for ( ArrayList<Monitor> monitorsPerTimeStep : timeSteps){
 			boolean matched = false;
-			for( Monitor monitor : monitorsPerTimeStep){
+			for( Monitor monitor :  monitorsPerTimeStep){
 			 if ( monitor.getHOST().equals(desireMonitor.getHOST()) ){
 				 arr.add(monitor.getTTL());
 				 matched = true;
@@ -122,3 +165,4 @@ public class DataSet {
 		return arr;
 	}
 }
+
