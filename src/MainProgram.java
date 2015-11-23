@@ -38,11 +38,16 @@ public class MainProgram {
 	public static void main(String[] arg) throws Exception{
 		
 		ArrayList<Monitor> listMonitor = Parser.parse("Z:/Eclipse/INF_570/LabPolyGroupFlapping/BGPHijack/");
-		Test.debugMonitorSet(listMonitor);
+		//Test.debugMonitorSet(listMonitor);
+		
+		
+		
 		ArrayList<Monitor> listMonitorMeanValues = DataSet.makeMeanValuesOfMesurement(listMonitor);
-		Test.debugMonitorSet(listMonitorMeanValues);
+		
+		//Test.debugMonitorSet(listMonitorMeanValues);
+		
 		ArrayList<ArrayList<Monitor>> timeSteps = DataSet.timeStepsFor(listMonitorMeanValues);		
-		//debugTimeSteps(timeSteps);
+		Test.debugTimeSteps(timeSteps);
 		
 		
 		
@@ -77,3 +82,4 @@ public class MainProgram {
 }
 
 
+//check
