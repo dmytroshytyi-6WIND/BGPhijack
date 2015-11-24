@@ -9,6 +9,7 @@ public class Monitor {
 	protected double meanTTL;
 	protected double sdRTT;
 	protected double sdTTL;
+	protected int success;
 	
 	public Monitor(int TTL, double RTT){
 		this.TTL = TTL;
@@ -36,7 +37,14 @@ public class Monitor {
 		return this.HOST + "\n" + this.TTL + "\n" + this.RTT + "\n" + this.DESTINATION;
 	}
 
-
+	public double getSuccess(){
+		return success;		
+	}
+	
+	public void setSuccess(int suc){
+		this.success = suc;		
+	}
+	
 	public double getSdTTL(){
 		return sdTTL;		
 	}

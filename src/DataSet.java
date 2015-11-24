@@ -118,9 +118,8 @@ public class DataSet {
 				if ((monitorsList.get(i).getTTL() == 1) &&
 					(monitorsList.get(i).getRTT() == 1) &&
 					monitorsList.get(i).getDESTINATION().equals("1")){
-					
+					monitorsList.get(i).setSuccess(1);
 				}
-				
 			}
 		}
 		
