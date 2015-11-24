@@ -85,7 +85,7 @@ public class DataSet {
 		Map<Integer, Monitor> listMonitors = new HashMap<Integer, Monitor>();
 		int cntMonitor = 0;
 		for (ArrayList<Monitor> monitor : queues){
-			int sumTTL = 0;
+			double sumTTL = 0;
 			double sumRTT = 0.0;
 			int cntElemInArr = 0;
 			ArrayList<Integer> arrTTL = new ArrayList<Integer>();
@@ -93,7 +93,7 @@ public class DataSet {
 			
 			for ( Monitor timeStep : monitor){
 				 sumRTT += timeStep.getRTT();
-				 sumTTL += timeStep.getTTL();
+				 sumTTL += (double)timeStep.getTTL();
 				 arrTTL.add(timeStep.getTTL());
 				 arrRTT.add(timeStep.getRTT());
 				 cntElemInArr++;
@@ -106,10 +106,26 @@ public class DataSet {
 								Calc.getStandartDeviation(Modify.arrDoubleToString(arrRTT)),
 								Calc.getStandartDeviation(Modify.arrIntToString(arrTTL))
 								));
+			
 		}
 		return listMonitors; 
 	}
 	
+	 
+	public static ArrayList<HashMap<Integer,Monitor>> destCompareTTLRTT (ArrayList<HashMap<Integer,Monitor>> listOfNotifyChanges){
+		for (HashMap<Integer,Monitor> monitorsList:listOfNotifyChanges){
+			for (int i=0;i<monitorsList.size();i++){
+				if ((monitorsList.get(i).getTTL() == 1) &&
+					(monitorsList.get(i).getRTT() == 1) &&
+					monitorsList.get(i).getDESTINATION().equals("1")){
+					
+				}
+				
+			}
+		}
+		
+		return listOfNotifyChanges;
+	}
 	
 	public static ArrayList<Integer> TTLPerMonitor(Monitor desireMonitor, ArrayList<ArrayList<Monitor>> timeSteps){
 		ArrayList<Integer> arr = new ArrayList<Integer>();

@@ -1,14 +1,20 @@
 public class Monitor {
+	
 	protected String HOST;
 	protected int TTL;
 	protected double RTT;
 	protected String DESTINATION;
 	protected int timeStep;
 	protected double meanRTT;
-	protected int meanTTL;
+	protected double meanTTL;
 	protected double sdRTT;
 	protected double sdTTL;
 	
+	public Monitor(int TTL, double RTT){
+		this.TTL = TTL;
+		this.RTT = RTT;
+		
+	}
 	
 	public Monitor(String HOST, int TTL, double RTT, String DESTINATION, int TimeStep){
 		this.HOST = HOST;
@@ -19,7 +25,7 @@ public class Monitor {
 		
 	}
 	
-	public Monitor(double meanRTT,int meanTTL,double sdRTT,double sdTTL){
+	public Monitor(double meanRTT,double meanTTL,double sdRTT,double sdTTL){
 		this.meanRTT =	meanRTT;
 		this.meanTTL =	meanTTL;
 		this.sdRTT	 =	sdRTT;
@@ -46,10 +52,10 @@ public class Monitor {
 		this.sdRTT = sdRTT;		
 	}
 
-	public int getMeanTTL(){
+	public double getMeanTTL(){
 		return meanTTL;		
 	}
-	public void setMeanTTL(int meanTTL){
+	public void setMeanTTL(double meanTTL){
 		this.meanTTL = meanTTL;		
 	}
 	
