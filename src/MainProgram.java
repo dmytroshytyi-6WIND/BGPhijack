@@ -37,7 +37,7 @@ public class MainProgram {
 	
 	public static void main(String[] arg) throws Exception{
 		
-		ArrayList<Monitor> listMonitor = Parser.parse("D:\\HUYMX\\M1\\Peer to Peer Networking\\LabPolyGroupFlapping\\New folder");
+		ArrayList<Monitor> listMonitor = Parser.parse("Z:/Eclipse/INF_570/LabPolyGroupFlapping/BGPHijack/");
 		//Test.debugMonitorSet(listMonitor);
 		
 		
