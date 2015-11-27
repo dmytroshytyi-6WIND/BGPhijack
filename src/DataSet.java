@@ -182,5 +182,22 @@ public class DataSet {
 				
 		return arr;
 	}
+	
+	public static ArrayList<HashMap<String,Monitor>> timeStepForHashMap(ArrayList<ArrayList<Monitor>> timeSteps){
+		ArrayList<HashMap<String,Monitor>> timeStepHashMap = new ArrayList<HashMap<String,Monitor>>();
+		HashMap<String,Monitor> hashMapOfOneTimeStep = new HashMap<String,Monitor>();
+		int counter = 1;
+		for (ArrayList<Monitor> monitorsPerTimeStep : timeSteps){
+			timeStepHashMap.add(new HashMap<String,Monitor>(hashMapOfOneTimeStep));
+			for (Monitor monitor: monitorsPerTimeStep){
+				counter ++;
+				hashMapOfOneTimeStep.put(monitor.getHOST(),monitor);
+			}
+			
+			System.out.print("counter" + counter);
+			counter =1;
+		}
+	return timeStepHashMap;
+	}
 }
 
