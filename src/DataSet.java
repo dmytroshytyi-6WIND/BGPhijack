@@ -82,19 +82,19 @@ public class DataSet {
 
 	//on input we have arrays of timesteps for all monitors.
 	//i.e we have one array with number of monitors. and embed array of time intervals for each monitor.
-	public static Map<Integer, Monitor> ttlRttDstPerMonitorsQueues(ArrayList<Map<String,Monitor>> queues){
+	public static Map<Integer, Monitor> ttlRttDstPerMonitorsQueues(ArrayList<Map<Integer,Monitor>> queues){
 																   
 		// ArrayList<ArrayList<ArrayList<String>>> Monitors =  new ArrayList<ArrayList<ArrayList<String>>>();
 		Map<Integer, Monitor> listMonitors = new HashMap<Integer, Monitor>();
 		int cntMonitor = 0;
-		for (Map<String,Monitor> monitor : queues){
+		for (Map<Integer,Monitor> monitor : queues){
 			double sumTTL = 0;
 			double sumRTT = 0.0;
 			int cntElemInArr = 0;
 			ArrayList<Integer> arrTTL = new ArrayList<Integer>();
 			ArrayList<Double> arrRTT = new ArrayList<Double>();
 			
-			for ( Entry<String, Monitor> entry : monitor.entrySet()){
+			for ( Entry<Integer, Monitor> entry : monitor.entrySet()){
 				 Monitor timeStep = entry.getValue();
 				 sumRTT += timeStep.getRTT();
 				 sumTTL += (double)timeStep.getTTL();
