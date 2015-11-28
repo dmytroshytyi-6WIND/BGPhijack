@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -182,5 +183,21 @@ public class DataSet {
 				
 		return arr;
 	}
+	
+	public static ArrayList<LinkedHashMap<String,Monitor>> timeStepForHashMap(ArrayList<ArrayList<Monitor>> timeSteps){
+		ArrayList<LinkedHashMap<String,Monitor>> timeStepHashMap = new ArrayList<LinkedHashMap<String,Monitor>>();
+		LinkedHashMap<String,Monitor> hashMapOfOneTimeStep = new LinkedHashMap<String,Monitor>();
+		int counter = 1;
+		for (ArrayList<Monitor> monitorsPerTimeStep : timeSteps){
+			timeStepHashMap.add(new LinkedHashMap<String,Monitor>(hashMapOfOneTimeStep));
+			for (Monitor monitor: monitorsPerTimeStep){
+				if (monitor.getTimeStep()==counter){
+					hashMapOfOneTimeStep.put(monitor.getHOST(),monitor);
+				}
+			}
+		}
+	return timeStepHashMap;
+	}
+	
 }
 
