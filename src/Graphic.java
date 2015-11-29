@@ -93,4 +93,51 @@ public class Graphic {
 		    
 		    return result;
 		}
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		////////////////////////////////////////////////////////////////////////////////////////////////
+		//graph for success, fail allerts//
+		///////////////////////////////////////////////////////////////////////////////////////////////
+		public static void createFrame(ArrayList<int[]> cntArray){					//put here ArrayList< int[] >
+			ArrayList<JFrame> Frames = new ArrayList<JFrame>();
+			JFrame frame = new JFrame("Factor adjusting");
+			Frames.add(frame);
+			
+		    for (JFrame framemy: Frames){
+				framemy.getContentPane().add(new ChartPanel(chartFunc(cntArray)));	//put here ArrayList< int[] >
+				framemy.pack();
+				framemy.setVisible(true);
+			}	
+		}
+		public static JFreeChart chartFunc(ArrayList<int[]> cntArray){				//put here ArrayList< int[] >
+			JFreeChart chart = ChartFactory.createScatterPlot(
+					"Factor adjucting", // chart title
+		            "Succes\\Fail", // x axis label
+		            "Factor", // y axis label
+		            createDataset(cntArray), 										// put here ArrayList< int[] >
+		            PlotOrientation.VERTICAL,
+		            true, // include legend
+		            true, // tooltips
+		            false // urls
+		            );	
+			return chart;
+		}
+
+		public static XYDataset createDataset(ArrayList <int[]> cntArr) {
+			
+		    XYSeriesCollection result = new XYSeriesCollection();
+		    XYSeries Success = new XYSeries("Success");
+		    XYSeries Fail = new XYSeries("Fail"); 
+		    XYSeries SuccessFail = new XYSeries("Success\\Fail"); 
+		    int factor = 0;
+		    for (int[] dataArrPerFactor:cntArr){
+		    	Success.add(factor++,dataArrPerFactor[1]);
+		    	Fail.add(factor++,dataArrPerFactor[0]);
+		    	SuccessFail.add(factor++,dataArrPerFactor[1]/dataArrPerFactor[0]);
+		    }
+		    
+		    result.addSeries(Success);
+		    result.addSeries(Fail);
+		    result.addSeries(SuccessFail);
+		    return result;
+		}
 }
