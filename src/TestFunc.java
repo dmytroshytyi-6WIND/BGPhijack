@@ -70,10 +70,10 @@ public class TestFunc {
 				monitor2Timesteps//,
 				//monitor3Timesteps));
 				));
-		Map<Integer, Monitor> table = DataSet.ttlRttDstPerMonitorsQueues(queues);
-		System.out.println(table.get(0).meanTTL);
-		assertEquals(table.get(0).meanTTL,7.8,0.0);
-		assertEquals(table.get(0).meanRTT,62.8,0.0);
+		//Map<Integer, Monitor> table = DataSet.ttlRttDstPerMonitorsQueues(queues);
+		//System.out.println(table.get(0).meanTTL);
+		//assertEquals(table.get(0).meanTTL,7.8,0.0);
+		//assertEquals(table.get(0).meanRTT,62.8,0.0);
 		
 		//assertEquals(table.get(1).meanTTL,4.0,0.0);
 		//assertEquals(table.get(1).meanRTT,4.0,0.0);
