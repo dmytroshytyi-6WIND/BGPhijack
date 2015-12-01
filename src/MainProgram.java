@@ -3,6 +3,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
 
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.*;
@@ -36,47 +37,24 @@ public class MainProgram {
 	}
 	
 	public static void main(String[] arg) throws Exception{
-		
-		ArrayList<Monitor> listMonitor = Parser.parse("Z:/Eclipse/INF_570/LabPolyGroupFlapping/BGPHijack/");
-		//Test.debugMonitorSet(listMonitor);
-		
-		
-		
-		ArrayList<Monitor> listMonitorMeanValues = DataSet.makeMeanValuesOfMesurement(listMonitor);
-		
-		//Test.debugMonitorSet(listMonitorMeanValues);
-		
-		ArrayList<ArrayList<Monitor>> timeSteps = DataSet.timeStepsFor(listMonitorMeanValues);		
-		Test.debugTimeSteps(timeSteps);
-		
-		
-		
-		Graphic.createFrames(timeSteps);
-		//test(timeSteps);
-	
-		ArrayList<Double>  rttList= DataSet.RTTPerMonitor(timeSteps.get(0).get(0),timeSteps);
-		ArrayList<Integer>  ttlList= DataSet.TTLPerMonitor(timeSteps.get(0).get(0),timeSteps);
-
-		ArrayList <String> withoutZerosRTT = Modify.deleteZerosFromArray(Modify.arrDoubleToString(rttList));
-		ArrayList <String> withoutZerosTTL = Modify.deleteZerosFromArray(Modify.arrIntToString(ttlList));
-/*		
-		getStandartDeviation(deleteZerosFromArray(arrIntToString(TTLPerMonitor(timeSteps.get(0).get(0),timeSteps))));
-		
-		//print
-		 for (String tmp : withoutZerosRTT){
-				System.out.println(tmp);	 
-		 }		 
-		 System.out.println("----------------------------------------------");
-		 System.out.println(getStandartDeviation(withoutZerosRTT));
-		 System.out.println("----------------------------------------------");
-		 
-		
-		 for (String tmp : withoutZerosTTL){
-				System.out.println(tmp);	 
-		 }		
-		 System.out.println("----------------------------------------------");
-		 System.out.println(getStandartDeviation(withoutZerosTTL));
-*/
+		ArrayList<Monitor> listMonitor = Parser.parse();
+		LinkedHashMap<String,Monitor> lisOftMonitors = Parser.standardMonitorList();
+//		Test.debugstandardMonitorList(lisOftMonitors);
+		ArrayList<Monitor> meanValues =  DataSet.makeMeanValuesOfMesurement(listMonitor);
+		ArrayList<ArrayList<Monitor>> timeSteps =  DataSet.timeStepsFor(meanValues);
+		ArrayList<LinkedHashMap<Integer,Monitor>> timeStepsHashMap = DataSet.timeStepForHashMap(timeSteps);
+//		Test.debugarrayToSlide(timeStepsHashMap);
+		ArrayList<LinkedHashMap<Integer,Monitor>> timeStepHashMapFill = DataSet.timeStepHashMapFill(timeStepsHashMap,lisOftMonitors);
+//		Test.debugarrayToSlide(timeStepHashMapFill);
+		ArrayList<ArrayList<Monitor>> timeStepsFinal = DataSet.timeStepsFinal(timeStepHashMapFill);
+//		Test.debugTimeSteps(timeStepsFinal);
+		ArrayList<ArrayList<Monitor>> timeStepsNew = DataSet.transposeTimeSteps(timeStepsFinal);
+//		ArrayList<ArrayList<Monitor>> timeStepsNew = DataSet.transposeTimeSteps(timeSteps);
+//		Test.debugTimeSteps(timeStepsNew);
+		ArrayList<LinkedHashMap<Integer,Monitor>> finalTimeStep = DataSet.finalTimeStep(timeStepsNew);
+//		Test.debugarrayToSlide(finalTimeStep);
+		ArrayList<LinkedHashMap<Integer,Monitor>> notifyChanges = DataSet.notifyChanges(finalTimeStep, 0.5);
+//		Test.debugarrayToSlide(notifyChanges);
 	}
 
 }
