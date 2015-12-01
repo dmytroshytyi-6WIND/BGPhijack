@@ -82,6 +82,41 @@ public class DataSet {
 
 	//on input we have arrays of timesteps for all monitors.
 	//i.e we have one array with number of monitors. and embed array of time intervals for each monitor.
+<<<<<<< HEAD
+=======
+	public static LinkedHashMap<Integer, Monitor> ttlRttDstPerMonitorsQueues(ArrayList<LinkedHashMap<Integer,Monitor>> queues){
+																   
+		// ArrayList<ArrayList<ArrayList<String>>> Monitors =  new ArrayList<ArrayList<ArrayList<String>>>();
+		LinkedHashMap<Integer, Monitor> listMonitors = new LinkedHashMap<Integer, Monitor>();
+		int cntMonitor = 0;
+		for (LinkedHashMap<Integer,Monitor> monitor : queues){
+			double sumTTL = 0;
+			double sumRTT = 0.0;
+			int cntElemInArr = 0;
+			ArrayList<Integer> arrTTL = new ArrayList<Integer>();
+			ArrayList<Double> arrRTT = new ArrayList<Double>();
+			
+			for ( Entry<Integer, Monitor> entry : monitor.entrySet()){
+				 Monitor timeStep = entry.getValue();
+				 sumRTT += timeStep.getRTT();
+				 sumTTL += (double)timeStep.getTTL();
+				 arrTTL.add(timeStep.getTTL());
+				 arrRTT.add(timeStep.getRTT());
+				 cntElemInArr++;
+			}
+			
+			//possible error according to the counter that increments in the func listMonitors
+			listMonitors.put(cntMonitor++, 
+					new Monitor(sumRTT / cntElemInArr, 
+								sumTTL / cntElemInArr,
+								Calc.getStandartDeviation(Modify.arrDoubleToString(arrRTT)),
+								Calc.getStandartDeviation(Modify.arrIntToString(arrTTL))
+								));
+			
+		}
+		return listMonitors; 
+	}
+>>>>>>> refs/remotes/origin/3-calculateMean-SD-ForTimePeriod(slidingArray)
 	
 	 
 //	public static ArrayList<HashMap<Integer,Monitor>> destCompareTTLRTT (ArrayList<HashMap<Integer,Monitor>> listOfNotifyChanges){
