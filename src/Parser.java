@@ -8,7 +8,8 @@ import java.util.LinkedHashMap;
 
 
 public class Parser {
-	public static ArrayList<Monitor> parse(String path) throws Exception {
+	public static ArrayList<Monitor> parse() throws Exception {
+		String path = "D:\\HUYMX\\M1\\Peer to Peer Networking\\LabPolyGroupFlapping\\New folder";
 		ArrayList<Monitor> ListMonitors = new ArrayList<Monitor>();
 		File folder = new File(path);
 		int timeStep=0;
@@ -34,7 +35,7 @@ public class Parser {
 		return ListMonitors;
 	}
 	public static LinkedHashMap<String,Monitor> standardMonitorList() throws IOException{
-		String path = "Z:\\Eclipse\\INF_570\\LabPolyGroupFlapping\\resultsFlapping";
+		String path = "D:\\HUYMX\\M1\\Peer to Peer Networking\\LabPolyGroupFlapping\\resultsFlapping";
 		LinkedHashMap<String,Monitor> standardMonitorList = new LinkedHashMap<String,Monitor>();
 		File file = new File(path);
 		FileReader fileReader = new FileReader(file);
