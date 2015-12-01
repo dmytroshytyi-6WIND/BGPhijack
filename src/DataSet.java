@@ -82,12 +82,12 @@ public class DataSet {
 
 	//on input we have arrays of timesteps for all monitors.
 	//i.e we have one array with number of monitors. and embed array of time intervals for each monitor.
-	public static Map<Integer, Monitor> ttlRttDstPerMonitorsQueues(ArrayList<Map<Integer,Monitor>> queues){
+	public static LinkedHashMap<Integer, Monitor> ttlRttDstPerMonitorsQueues(ArrayList<LinkedHashMap<Integer,Monitor>> queues){
 																   
 		// ArrayList<ArrayList<ArrayList<String>>> Monitors =  new ArrayList<ArrayList<ArrayList<String>>>();
-		Map<Integer, Monitor> listMonitors = new HashMap<Integer, Monitor>();
+		LinkedHashMap<Integer, Monitor> listMonitors = new LinkedHashMap<Integer, Monitor>();
 		int cntMonitor = 0;
-		for (Map<Integer,Monitor> monitor : queues){
+		for (LinkedHashMap<Integer,Monitor> monitor : queues){
 			double sumTTL = 0;
 			double sumRTT = 0.0;
 			int cntElemInArr = 0;
@@ -116,18 +116,37 @@ public class DataSet {
 	}
 	
 	 
-	public static ArrayList<HashMap<Integer,Monitor>> destCompareTTLRTT (ArrayList<HashMap<Integer,Monitor>> listOfNotifyChanges){
-		for (HashMap<Integer,Monitor> monitorsList:listOfNotifyChanges){
-			for (int i=0;i<monitorsList.size();i++){
-				if ((monitorsList.get(i).getTTL() == 1) &&
-					(monitorsList.get(i).getRTT() == 1) &&
-					monitorsList.get(i).getDESTINATION().equals("1")){
-					monitorsList.get(i).setSuccess(1);
+//	public static ArrayList<HashMap<Integer,Monitor>> destCompareTTLRTT (ArrayList<HashMap<Integer,Monitor>> listOfNotifyChanges){
+	public static int[] destCompareTTLRTT (ArrayList<HashMap<Integer,Monitor>> listOfNotifyChanges){
+		int[] cntArr = new int[1];
+		int numSuccess = 0;
+		int numFalse = 0;
+		
+		for (HashMap<Integer,Monitor> monitor:listOfNotifyChanges){
+			for (int i=0;i<monitor.size();i++){
+				if ((monitor.get(i).getTTL() == 1) &&
+					(monitor.get(i).getRTT() == 1) &&
+					 monitor.get(i).getDESTINATION().equals("1")){
+					//monitor.get(i).setSuccess(1);
+					 numSuccess++;
+				}else{
+					if(((	monitor.get(i).getTTL() == 1) &&
+						(	monitor.get(i).getRTT() == 1) &&
+							monitor.get(i).getDESTINATION().equals("0")) ||
+						((	monitor.get(i).getTTL() == 0) &&
+						(	monitor.get(i).getRTT() == 0) &&
+						 	monitor.get(i).getDESTINATION().equals("1"))	
+						){
+							numFalse++;
+						}
+					
 				}
 			}
 		}
-		
-		return listOfNotifyChanges;
+		cntArr[0] = numFalse;
+		cntArr[1] = numSuccess;
+		return cntArr;
+//		return listOfNotifyChanges;
 	}
 	
 	public static ArrayList<Integer> TTLPerMonitor(Monitor desireMonitor, ArrayList<ArrayList<Monitor>> timeSteps){
