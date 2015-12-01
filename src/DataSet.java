@@ -198,5 +198,135 @@ public class DataSet {
 	return timeStepHashMap;
 	}
 	
+	public static ArrayList<LinkedHashMap<Integer,Monitor>> timeStepForHashMap(ArrayList<ArrayList<Monitor>> TimeSteps){
+		ArrayList<LinkedHashMap<Integer,Monitor>> timeStepHashMap = new ArrayList<LinkedHashMap<Integer,Monitor>>();
+		LinkedHashMap<Integer,Monitor> hashMapOfOneTimeStep = new LinkedHashMap<Integer,Monitor>();
+		
+		int key = 0;
+		for (ArrayList<Monitor> monitorTimeSteps : TimeSteps){
+			for (Monitor monitor: monitorTimeSteps){
+				key++;
+				hashMapOfOneTimeStep.put(key,monitor);
+			}
+			timeStepHashMap.add(new LinkedHashMap<Integer,Monitor>(hashMapOfOneTimeStep));
+			hashMapOfOneTimeStep.clear();
+			key=0;
+		}
+	return timeStepHashMap;
+	}
+		
+	public static ArrayList<LinkedHashMap<Integer,Monitor>> timeStepHashMapFill(ArrayList<LinkedHashMap<Integer,Monitor>> timeStepForHashMap,
+															LinkedHashMap<String,Monitor> standardMonitorList){
+		ArrayList<LinkedHashMap<Integer,Monitor>> timeStepHashMapFill = new ArrayList<LinkedHashMap<Integer,Monitor>>();
+		LinkedHashMap<Integer,Monitor> HashMapFill = new LinkedHashMap<Integer,Monitor>();
+		boolean match=false;
+		int keyInt=0;
+//edit timestep form 1 to 0		
+		int timeStep =0;
+		int keyChange=0;
+		for (LinkedHashMap<Integer,Monitor> timeStepForHashMapScan : timeStepForHashMap){
+			for (String keyString : standardMonitorList.keySet()){
+				for (int key : timeStepForHashMapScan.keySet()){
+					if (timeStepForHashMapScan.get(key).getHOST().equals(keyString)){
+						match = true;
+						keyChange = key;
+						HashMapFill.put(keyInt,timeStepForHashMapScan.get(keyChange));
+					}
+				}	
+
+					if (match!=true){
+						HashMapFill.put(keyInt,new Monitor(keyString,0,0.0,"NA",timeStep));
+					}
+				match=false;	
+//					}
+				keyInt++;
+			}
+			
+			timeStepHashMapFill.add(new LinkedHashMap<Integer,Monitor>(HashMapFill));
+			HashMapFill.clear();
+			timeStep++;
+			keyInt=0;
+		}
+		
+		return timeStepHashMapFill;
+	}
+	
+	public static ArrayList<ArrayList<Monitor>> timeStepsFinal (ArrayList<LinkedHashMap<Integer,Monitor>> timeStepForHashMap){
+		ArrayList<ArrayList<Monitor>> timeStepsFinal = new ArrayList<ArrayList<Monitor>>();
+		ArrayList<Monitor> monitor = new ArrayList<Monitor>();
+		for (int a=0; a<timeStepForHashMap.size();a++){
+			for (int key:timeStepForHashMap.get(a).keySet()){
+				monitor.add(timeStepForHashMap.get(a).get(key));
+			}
+			timeStepsFinal.add(new ArrayList<Monitor>(monitor));
+			monitor.clear();
+		}
+	return timeStepsFinal;
+	}
+	
+
+	//transpose
+	public static ArrayList<ArrayList<Monitor>> transposeTimeSteps (ArrayList<ArrayList<Monitor>> timeSteps){
+
+		ArrayList<ArrayList<Monitor>> newTimeSteps = new ArrayList<ArrayList<Monitor>>();
+//		int currentTimeStep=1;
+		int rowCount=timeSteps.size();
+		int colCount=0;
+		
+		for (int i=0;i<rowCount;i++){
+			ArrayList<Monitor> row = timeSteps.get(i);
+			int rowSize = row.size();
+			if (rowSize > colCount){
+				colCount = rowSize;
+			}
+		}
+		for (int r=0;r<rowCount;r++){
+			ArrayList<Monitor> innerIn = timeSteps.get(r);
+			for (int c=0; c<colCount;c++){
+				ArrayList<Monitor> matrixOutRow = new ArrayList<Monitor>();
+				if (r!=0){
+					try{
+						matrixOutRow = newTimeSteps.get(c);
+					}
+					catch
+						(java.lang.IndexOutOfBoundsException e){
+//	                    System.out.println("Transposition error!\n"
+//	                            + "could not get matrixOut at index "
+//	                             + c + " - out of bounds" +e);
+                    matrixOutRow.add(new Monitor("host",0,0.0,"NA",0));
+					}
+				}
+				try{
+					matrixOutRow.add(innerIn.get(c));
+				}
+				catch (java.lang.IndexOutOfBoundsException e){
+	                matrixOutRow.add(new Monitor("host",0,0.0,"NA",0));
+				}
+				try{
+					newTimeSteps.set(c,matrixOutRow);
+				}
+				catch (java.lang.IndexOutOfBoundsException e){
+	                newTimeSteps.add(matrixOutRow);
+	            }
+				
+			}
+		}
+
+		return newTimeSteps;
+	}
+	
+	public static ArrayList<LinkedHashMap<Integer,Monitor>> finalTimeStep(ArrayList<ArrayList<Monitor>> transposeTimeSteps){
+		ArrayList<LinkedHashMap<Integer,Monitor>> finalTimeStep = new ArrayList<LinkedHashMap<Integer,Monitor>>();
+		LinkedHashMap<Integer,Monitor> finalTimeStepScan = new LinkedHashMap<Integer,Monitor>();
+		for (ArrayList<Monitor> transposeTimeStepsScan : transposeTimeSteps){
+			for (Monitor tranposeTimeStepsScanScan : transposeTimeStepsScan){
+				finalTimeStepScan.put(tranposeTimeStepsScanScan.getTimeStep(), tranposeTimeStepsScanScan);
+			}
+		finalTimeStep.add(new LinkedHashMap<Integer,Monitor>(finalTimeStepScan));
+		finalTimeStepScan.clear();
+		}
+		return finalTimeStep;
+	}
+	
 }
 
