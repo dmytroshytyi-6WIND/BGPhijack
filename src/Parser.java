@@ -8,7 +8,8 @@ import java.util.LinkedHashMap;
 
 
 public class Parser {
-	public static ArrayList<Monitor> parse(String path) throws Exception {
+	public static ArrayList<Monitor> parse() throws Exception {
+		String path ="Z:\\Eclipse\\INF_570\\LabPolyGroupFlapping\\BGPHijack";
 		ArrayList<Monitor> ListMonitors = new ArrayList<Monitor>();
 		File folder = new File(path);
 		int timeStep=0;
