@@ -273,6 +273,39 @@ public class DataSet {
 	return timeStepsFinal;
 	}
 	
+	//transpose-new function. Input is timeStepHashMapFill
+	public static ArrayList<LinkedHashMap<Integer,Monitor>> transposeTimeStepsNew (ArrayList<LinkedHashMap<Integer,Monitor>> timeStepHashMapFill){
+			ArrayList<LinkedHashMap<Integer,Monitor>> transposeTimeStepsNew = new ArrayList<LinkedHashMap<Integer,Monitor>>();
+			LinkedHashMap<Integer,Monitor> hashMapOfTimeStepsForOneMonitor = new LinkedHashMap<Integer,Monitor>();
+			for (int j=0;j<timeStepHashMapFill.size();j++){							//TS
+				for (int i=0; i<timeStepHashMapFill.get(j).size();i++){				//MONITORS
+					if (j==0){
+						hashMapOfTimeStepsForOneMonitor.put(j,new Monitor(timeStepHashMapFill.get(j).get(i).getHOST(),
+																			timeStepHashMapFill.get(j).get(i).getTTL(),
+																			timeStepHashMapFill.get(j).get(i).getRTT(),
+																			timeStepHashMapFill.get(j).get(i).getDESTINATION(),
+																			timeStepHashMapFill.get(j).get(i).getTimeStep()));
+						transposeTimeStepsNew.add(i,new LinkedHashMap<Integer,Monitor>(hashMapOfTimeStepsForOneMonitor));
+						
+					}
+					else {
+						hashMapOfTimeStepsForOneMonitor = transposeTimeStepsNew.get(i);
+						hashMapOfTimeStepsForOneMonitor.put(j,new Monitor(timeStepHashMapFill.get(j).get(i).getHOST(),
+																			timeStepHashMapFill.get(j).get(i).getTTL(),
+																			timeStepHashMapFill.get(j).get(i).getRTT(),
+																			timeStepHashMapFill.get(j).get(i).getDESTINATION(),
+																			timeStepHashMapFill.get(j).get(i).getTimeStep()));
+
+						transposeTimeStepsNew.set(i,hashMapOfTimeStepsForOneMonitor);
+
+					}
+
+				}
+
+			}
+			return transposeTimeStepsNew;
+		}
+
 
 	//transpose
 	public static ArrayList<ArrayList<Monitor>> transposeTimeSteps (ArrayList<ArrayList<Monitor>> timeSteps){
@@ -337,18 +370,18 @@ public class DataSet {
 		return finalTimeStep;
 	}
 	
-	public static ArrayList<LinkedHashMap<Integer,Monitor>> notifyChanges(ArrayList<LinkedHashMap<Integer,Monitor>> finalTimeStep,double factor){
+	public static ArrayList<HashMap<Integer,Monitor>> notifyChanges(ArrayList<LinkedHashMap<Integer,Monitor>> finalTimeStep,double factor){
 		LinkedHashMap<Integer, Monitor> monitorTableSdM = new LinkedHashMap<Integer, Monitor>();
 		
 		ArrayList<LinkedHashMap<Integer,Monitor>> slidingArray = new ArrayList<LinkedHashMap<Integer,Monitor>>();
 		
-		ArrayList<LinkedHashMap<Integer,Monitor>> listOfNotifyChanges = new ArrayList<LinkedHashMap<Integer,Monitor>>();
-		LinkedHashMap<Integer, Monitor> notifyChanges = new LinkedHashMap<Integer, Monitor>();
+		ArrayList<HashMap<Integer,Monitor>> listOfNotifyChanges = new ArrayList<HashMap<Integer,Monitor>>();
+		HashMap<Integer, Monitor> notifyChanges = new HashMap<Integer, Monitor>();
 		LinkedHashMap<Integer,Monitor> slidingHashMap = new LinkedHashMap<Integer,Monitor>();
+		
+		
 		LinkedHashMap<Integer,Monitor> probeHashMap = new LinkedHashMap<Integer,Monitor>();
 		ArrayList<LinkedHashMap<Integer,Monitor>> slidingArrayOfHashMapFiveTimeSteps = new ArrayList<LinkedHashMap<Integer,Monitor>>();
-		ArrayList<ArrayList<Monitor>> slidingArrayOfArrayFiveTimeSteps = new ArrayList<ArrayList<Monitor>>();
-		ArrayList<ArrayList<Monitor>> slidingArrayOfArrayFiveTimeStepsTranpose = new ArrayList<ArrayList<Monitor>>();
 		ArrayList<LinkedHashMap<Integer,Monitor>> slidingArrayOfHashMapMonitors = new ArrayList<LinkedHashMap<Integer,Monitor>>();
 		LinkedHashMap<Integer,Monitor> lastTimeStep = new LinkedHashMap<Integer,Monitor>();
 		
@@ -358,38 +391,27 @@ public class DataSet {
 		int i=0;
 		int nbOfElements = 3; //number of elements in the sliding array, can be adjustable
 		int timeStep = 0;
-		int nbOfMonitors = 1;
-		int keyOfHM = 1;
-		
+		int nbOfMonitors = 0;
+		int cnt=0;
 		//===================================//
-		for (int c=1; c<(finalTimeStep.get(0).size()+1);c++){
-			for (LinkedHashMap<Integer,Monitor> finalTimeStepScan : finalTimeStep){
+		for (int c=0; c<(finalTimeStep.get(0).size());c++){								//Scan thru 95 timesteps
+			for (LinkedHashMap<Integer,Monitor> finalTimeStepScan : finalTimeStep){		//Scan thru each monitor in the monitor ArrayList
 				probeHashMap.put(nbOfMonitors, finalTimeStepScan.get(c));
 				nbOfMonitors++;
 			}
-			nbOfMonitors=1;
-			while (i>nbOfElements-1){
-				//getting the lastest timestep value
-				lastTimeStep = slidingArrayOfHashMapFiveTimeSteps.get(nbOfElements-1);
-				
-				
-				slidingArrayOfArrayFiveTimeSteps = timeStepsFinal(slidingArrayOfHashMapFiveTimeSteps);
-				
-				slidingArrayOfArrayFiveTimeStepsTranpose = transposeTimeSteps(slidingArrayOfArrayFiveTimeSteps);
-				
-				slidingArrayOfHashMapMonitors = finalTimeStep(slidingArrayOfArrayFiveTimeStepsTranpose);
-				double test2 = slidingArrayOfHashMapMonitors.get(1).get(1).getRTT();
+			nbOfMonitors=0;
+			i++;
+			if ((i>nbOfElements) && (i<95)){
+				slidingArrayOfHashMapMonitors = transposeTimeStepsNew(slidingArrayOfHashMapFiveTimeSteps);
 				slidingHashMap= ttlRttDstPerMonitorsQueues(slidingArrayOfHashMapMonitors);
-				double test = slidingHashMap.get(1).getTTL();
-				
-				for (int l=1;l<slidingHashMap.size();l++){
-					double test = slidingHashMap.get(l).getTTL();
-					deltaTTL = slidingHashMap.get(l).getTTL()-(double)probeHashMap.get(l).getTTL();
-					deltaRTT = slidingHashMap.get(l).getRTT()-probeHashMap.get(l).getRTT();
-					if (probeHashMap.get(l).getDESTINATION().equals(lastTimeStep.get(l).getHOST())){
+				for (int l=0;l<(slidingHashMap.size());l++){
+				//	System.out.println(slidingHashMap.get(l).getSdRTT() + "SFLDSFS");
+				//	System.out.println(slidingHashMap.get(l).getSdTTL() + "lfskdkk");
+					deltaRTT = probeHashMap.get(l).getRTT() - slidingHashMap.get(l).getMeanRTT();
+					deltaTTL = probeHashMap.get(l).getTTL() - slidingHashMap.get(l).getMeanTTL();
+					if (probeHashMap.get(l).getDESTINATION().equals(slidingArrayOfHashMapMonitors.get(l).get(nbOfElements-1).getDESTINATION())){
 						if (slidingHashMap.get(l).getSdRTT()*factor < Math.abs(deltaRTT)){
 							if (slidingHashMap.get(l).getSdTTL()*factor < Math.abs(deltaTTL)){
-								
 								notifyChanges.put(l, new Monitor(null,1,1.0,Integer.toString(0),timeStep));
 							}
 							else {
@@ -423,24 +445,17 @@ public class DataSet {
 							}
 						}
 					}
-					}
-				lastTimeStep.clear();
+				}		//end of FOR
 				slidingArrayOfHashMapFiveTimeSteps.remove(0);
-				listOfNotifyChanges.add(new LinkedHashMap<Integer, Monitor> (notifyChanges));
-			}
-			i++;
+				listOfNotifyChanges.add(new LinkedHashMap<Integer, Monitor>(notifyChanges));
+			}			//end of IF
 			slidingArrayOfHashMapFiveTimeSteps.add(new LinkedHashMap<Integer,Monitor>(probeHashMap));
-			
 			probeHashMap.clear();
-			lastTimeStep.clear();
-			slidingArrayOfArrayFiveTimeSteps.clear();
-			slidingArrayOfArrayFiveTimeStepsTranpose.clear();
-			slidingArrayOfHashMapMonitors.clear();
-			notifyChanges.clear();
-			slidingHashMap.clear();
-		}
-		
+		}				//end of first FOR
 		return listOfNotifyChanges;
 	}
+	
+
+
 }
 
