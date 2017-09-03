@@ -2,8 +2,9 @@
 
 
 Hijacking detection has become important as more
-and more Internet BGP hijacking incidents was reported. During the project, a simple yet effective BGP hijacking detection method is
-proposed which based on the Round trip time (RTT), Time to live
+and more Internet BGP hijacking incidents was reported. 
+
+The aim of the project is to prototype the software that will analyse the measurements from RIPE Atlas with complex structure and simple yet effective BGP hijacking detection method which based on the Round trip time (RTT), Time to live
 (TTL) value and route change in the response messages from the
 target to the monitors. This detection method is based on an
 observation that when BGP hijacking occurs, there will be
