@@ -18,6 +18,6 @@ false and true detection. Finally, an appropriate threshold value
 that gives a high possibility of correct BGP hijack detection is
 displayed.
 
-Details in the pdf:
+Details could be found in the pdf:
 
 https://perso.telecom-paristech.fr/~drossi/teaching/INF570/projects/2015-paper-4.pdf
