@@ -1,3 +1,10 @@
+//authors: Dmytro Shytyi, Tran Huy
+//email: dmytro@shytyi.net
+//website: http://shytyi.net
+//website: http://dmytro.shytyi.net
+//license: BSD
+//Please feel free to use and modify this, but keep the above information. Thanks!
+
 import java.awt.Color;
 import java.util.ArrayList;
 
