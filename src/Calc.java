@@ -1,4 +1,4 @@
-//authors: Dmytro Shytyi, Tran Huy
+//authors: Dmytro Shytyi
 //email: dmytro@shytyi.net
 //website: http://shytyi.net
 //website: http://dmytro.shytyi.net
