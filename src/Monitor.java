@@ -1,3 +1,10 @@
+//authors: Dmytro Shytyi
+//email: dmytro@shytyi.net
+//website: http://shytyi.net
+//website: http://dmytro.shytyi.net
+//license: BSD
+//Please feel free to use and modify this, but keep the above information. Thanks!
+
 public class Monitor {
 	
 	protected String HOST;
